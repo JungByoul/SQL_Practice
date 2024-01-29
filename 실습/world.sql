@@ -55,6 +55,75 @@ SELECT SUM(Population)
 FROM city
 WHERE CountryCode like 'KOR';
 
+-- Group By 문법
+SELECT * FROM city;
+-- 연습문제9 (직접 해보신 후에, 영상으로 확인하세요!)
+-- 각 국가별 도시 중 최대 Population 을 출력하시요
+SELECT Name, MAX(Population)
+FROM city
+GROUP BY Name;
+
+-- 연습문제10 (직접 해보신 후에, 영상으로 확인하세요!)
+-- 각 국가별 총 Population 과 해당 국가코드를 출력하시요
+SELECT SUM(Population), CountryCode FROM city
+GROUP BY CountryCode;
+
+
+-- 연습문제11(직접 해보신 후에, 영상으로 확인하세요!)
+-- 각 Continent 별 총 SurfaceArea 과 해당 Continent 를 출력하시요 (country 테이블 기반)
+SELECT Continent, SUM(SurfaceArea) FROM country
+GROUP BY Continent;
+
+-- 연습문제12 (직접 해보신 후에, 영상으로 확인하세요!)
+-- 각 Region 별 평균 GNP 와 해당 Region 를 출력하시요 (country 테이블 기반)
+SELECT Region, AVG(GNP) FROM country
+GROUP BY Region;
+
+-- 연습문제13
+-- 각 Region 별 평균 Life Expectancy 와 해당 Region 를 출력하시요 (country 테이블 기반)
+SELECT Region, AVG(LifeExpectancy) FROM country
+GROUP BY Region;
+
+-- 연습문제14 (직접 해보신 후에, 영상으로 확인하세요!)
+-- 각 Region 별 최소 IndepYear 와 해당 Region 를 출력하시요 (country 테이블 기반)
+SELECT Region, MIN(IndepYear) FROM COUNTRY
+GROUP BY Region;
+
+
+-- 연습문제15 (직접 해보신 후에, 영상으로 확인하세요!)
+-- country 테이블에서 Region 별로, IndepYear 가 1900 이상인 국가만 대상으로 평균 GNP 이 낮은 순으로 5개의
+-- Region 만 Region 과 평균 GNP 를 출력하세요 (이 문제를 풀기 위해, 연습문제16~ 19까지 작성해보신 후에, 한번에 연습문제 15번을 작성해보세요)
+SELECT Region, AVG(GNP) FROM country
+WHERE IndepYear >= 1900 GROUP BY Region
+ORDER BY AVG(GNP)
+LIMIT 5;
+
+
+-- 연습문제16 (직접 해보신 후에, 영상으로 확인하세요!)
+-- IndepYear 가 1900 이상인 국가를 출력하세요
+SELECT Region FROM country
+WHERE IndepYear >= 1900;
+
+-- 연습문제17 (직접 해보신 후에, 영상으로 확인하세요!)
+-- IndepYear 가 1900 이상인 국가를 Region 별로 묶어서, 평균 GNP 를 출력하세요
+SELECT Region, AVG(GNP) FROM country
+WHERE IndepYear >= 1900
+GROUP BY Region;
+
+-- 연습문제 18 (직접 해보신 후에, 영상으로 확인하세요!)
+-- IndepYear 가 1900이상인 국가를 Region 별로 묶어서, 평균 GNP 이 낮은 순으로 평균 GNP를 출력하세요
+SELECT AVG(GNP) FROM country
+WHERE IndepYear >= 1900 GROUP BY Region
+ORDER BY AVG(GNP);
+
+-- 연습문제19 (직접 해보신 후에, 영상으로 확인하세요!)
+-- IndepYear 가 1900 이상인 국가를 Region 별로 묶어서, 평균 GNP 이 낮은 순으로 5개의 Region 만 평균 GNP를 출력
+SELECT AVG(GNP) FROM country
+WHERE IndepYear >= 1900 GROUP BY Region
+ORDER BY AVG(GNP)
+LIMIT 5;
+
+
 -- 아래는 기존코드
 -- MySQL dump 10.13  Distrib 8.0.19, for osx10.14 (x86_64)
 --
