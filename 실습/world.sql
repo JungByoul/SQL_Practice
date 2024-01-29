@@ -123,6 +123,18 @@ WHERE IndepYear >= 1900 GROUP BY Region
 ORDER BY AVG(GNP)
 LIMIT 5;
 
+-- 연습문제20 (직접 해보신 후에, 영상으로 확인하세요!)
+-- country 테이블에서 Region 별로, IndepXear 가 1900 이상인 국가만 대상으로 평균 GNP 이 낮은 순으로 5개의
+-- Region 만 Region 과 평균 GNP 를 출력하세요. 단 평균 GNP 컬럼명을 AvgGNP 로 출력하세요
+SELECT Region, AVG(GNP) AvgGNP FROM country 
+WHERE IndepYear >= 1900
+GROUP BY Region
+ORDER BY AvgGNP
+LIMIT 5;
+
+
+
+
 
 -- 아래는 기존코드
 -- MySQL dump 10.13  Distrib 8.0.19, for osx10.14 (x86_64)
