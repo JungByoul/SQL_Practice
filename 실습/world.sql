@@ -37,12 +37,30 @@ SELECT * FROM city LIMIT 1;
 SELECT * FROM countrylanguage;
 SELECT COUNT(DISTINCT CountryCode) FROM countrylanguage;
 
+-- 연습문제7 (직접 해보신 후에, 영상으로 확인하세요!)
+-- - city 테이블에서 총 Population 알아내기
+-- - city 테이블에서 최대 Population 알아내기
+-- - city 테이블에서 최소 Population 알아내기
+-- - city 테이블에서 평균 Population 알아내기
+SELECT * FROM city LIMIT 15;
+SELECT SUM(Population) FROM city;
+SELECT MAX(Population) FROM city;
+SELECT MIN(Population) FROM city;
+SELECT AVG(Population) FROM city;
+
+-- 연습문제8 (직접 해보신 후에, 영상으로 확인하세요!)
+-- city 테이블에서 CountryCode 가 'KOR' 인 도시의 총 Population 수 알아내기
+
+SELECT SUM(Population)
+FROM city
+WHERE CountryCode like 'KOR';
+
 -- 아래는 기존코드
 -- MySQL dump 10.13  Distrib 8.0.19, for osx10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: world
 -- ------------------------------------------------------
--- Server version	8.0.19-debug
+Server version	8.0.19-debug
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
