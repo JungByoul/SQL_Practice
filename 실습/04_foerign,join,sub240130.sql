@@ -104,11 +104,98 @@ WHERE customer_id IS NULL;
 #성능 향상을 위해서도 조인 대신 서브쿼리 쓸 수도 있음
 #select from where 모두에서 쓰일 수 있음
 
+USE bestproducts;
+
+-- 연습문제
+-- 메인 카테고리별로 할인 가격이 10만원 이상인 상품이 몇개 있는지를 출력해보기 (JOIN 활용 SQL 과 서브쿼리 활용 SQL 모두 작성해보기)
+
+#join 활용 버전
+SELECT main_category, COUNT(*)
+FROM items I
+INNER JOIN ranking R ON I.item_code=R.item_code
+WHERE dis_price >= 100000
+GROUP BY main_category;
+
+#서브쿼리 활용 버전
+SELECT main_category, COUNT(*)
+FROM ranking
+WHERE item_code IN (SELECT item_code FROM items WHERE dis_price >= 100000)
+#이부분이 중요. 아이템 코드로 연결해주는 것임. 이 아이템 코드를 쓰는게 아니더라도ㅇㅇ
+GROUP BY main_category;
 
 
+-- 연습문제
+-- 'items' 테이블에서 'dis_price'가 200000 이상인 아이템들 중,
+--  각 'sub_category'별 아이템 수 출력해보기 (JOIN 활용 SQL 과 서브쿼리 활용 SQL 모두 작성해보기)
 
+#join 활용 버전
+SELECT sub_category, COUNT(*)
+FROM items I INNER JOIN ranking R ON I.item_code = R.item_code
+WHERE dis_price >= 200000
+GROUP BY sub_category;
+#서브쿼리 활용 버전
+SELECT sub_category, COUNT(*)
+FROM ranking
+WHERE item_code IN (SELECT item_code FROM items WHERE dis_price >= 200000)
+GROUP BY sub_category;
 
+-- 아래 첫번째 문제 풀기전에 짚어야할 문법사항.
+-- :group by를 두개 쓸 수 있다!
 
+#파이널 연습문제
+-- 연습문제
+-- 메인 카테고리, 서브 카테고리에 대해, 평균할인가격과 평균할인율을 출력해보기
+SELECT 
+	main_category, sub_category,
+    AVG(I.dis_price), AVG(I.discount_percent)
+FROM ranking R INNER JOIN items I ON R.item_code = I.item_code
+GROUP BY main_category, sub_category;
+-- 'INNER' 생략 가능
+
+--  연습문제
+-- 판매자별, 베스트상품 갯수, 평균할인가격, 평균할인율을, 베스트상품 갯수가 높은 순으로 출력해보기
+SELECT provider, COUNT(*) cnt, AVG(dis_price) price, AVG(discount_percent) perc
+FROM items
+GROUP BY provider
+ORDER BY cnt desc;
+
+-- 정답
+SELECT 
+	provider, COUNT(*) product_count,
+	AVG(dis_price), AVG(discount_percent) 
+FROM items I
+JOIN ranking R ON R.item_code = I.item_code
+GROUP BY provider
+ORDER BY product_count DESC;
+
+-- 연습문제
+-- 각 메인 카테고리별로(서브카테고리포함) 베스트 상품 갯수가 20개 이상인 판매자의 판매자별 평
+-- 균할인가격, 평균할인율, 베스트 상품 갯수 출력해보기
+SELECT R.main_category, R.sub_category, AVG(I.dis_price), AVG(I.discount_percent), COUNT(*)
+FROM ranking R INNER JOIN items I ON I.item_code = R.item_code
+WHERE COUNT(*) >= 20
+GROUP BY R.main_category, R.sub_category;
+-- 에러나서 못풀음
+
+-- 정답: 아아 where가 아니라 having 절을 써야지;;
+SELECT
+	main_category, provider,
+	AVG(dis_price), AVG(discount_percent), COUNT(*)
+FROM items I JOIN ranking R ON R.item_code = I.item_code
+GROUP BY main_category, provider
+HAVING COUNT(*) >= 20;
+
+-- 연습문제
+-- 'items' 테이블에서 'dis_price'가 50000 이상인 상품들 중, 각 'main_category'별 평균
+-- 'dis_price'와 'discount_percent' 출력해보기
+SELECT 
+	main_category,
+	AVG(dis_price), AVG(discount_percent)
+FROM items I
+	JOIN ranking R ON I.item_code = R.item_code
+WHERE dis_price >= 50000
+GROUP BY main_category;
+#진짜 오래걸림..; 아직 HAVING이랑 WHERE 헷갈리는듯
 
 
 DROP DATABASE IF EXISTS sqlDB;
