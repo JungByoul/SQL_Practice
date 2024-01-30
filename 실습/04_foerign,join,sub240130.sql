@@ -17,7 +17,8 @@ ORDER BY COUNT(*) DESC;
 #3. join
 #일반인과 분석가를 나누는 기준. 매우 중요
 
-#inner join은 두 테이블의 공통된 컬럼에서 동일한 값들만 합치는 것임
+#3-1 inner join.
+#은 두 테이블의 공통된 컬럼에서 동일한 값들만 합치는 것임
 SELECT * FROM ranking INNER JOIN ranking ON ranking.iterm_code = item.item_code --  on 옆에가 조인 조건
 WHERE ranking.main_category = 'ALL';
 
@@ -82,6 +83,29 @@ FROM items I
 INNER JOIN Ranking R ON I.item_code = R.item_code
 WHERE main_category = '화장품/헤어';
 -- 제시간 안에 정답 맞음.
+
+#3-2. OUTER JOIN
+
+-- 연습문제: sakila 데이터베이스에서 address 테이블에는 address_id 가 있지만, customer 테이블에는 없는 데이터의 갯수 출력하기
+USE sakila;
+-- 내 답안
+SELECT COUNT(C.address_id IS Null)
+FROM address A LEFT OUTER JOIN customer C ON A.address_id = C.address_id;
+
+-- 실제 답안
+SELECT COUNT(*)
+FROM address A LEFT OUTER JOIN customer C
+ON A.address_id = C.address_id
+WHERE customer_id IS NULL;
+
+
+#4.서브쿼리
+#조인과 서브쿼리 둘다 두 테이블에서 처리할 일이 있을 때 쓰임
+#성능 향상을 위해서도 조인 대신 서브쿼리 쓸 수도 있음
+#select from where 모두에서 쓰일 수 있음
+
+
+
 
 
 
