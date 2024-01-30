@@ -201,7 +201,26 @@ GROUP BY main_category;
 DROP DATABASE IF EXISTS sqlDB;
 CREATE DATABASE sqlDB;
 
+
+#7. 인덱스
+
+#잘모르겠음
 USE sqlDB;
+
+-- 연습문제
+-- groupName 으로 인덱스 추가하고 확인해보기
+-- prodName 으로 인덱스 추가하고 확인해보기
+
+CREATE INDEX group_name ON userTbl (userID);
+CREATE INDEX prodName ON userTbl(userID);
+SHOW INDEX FROM userTbl;
+
+
+#인덱스 삭제
+ALTER TABLE userTbl DROP INDEX group_name;
+
+
+#아래에서 만들어진 테이블들로 인덱스 실습
 DROP TABLE IF EXISTS userTbl;
 CREATE TABLE userTbl (
     userID CHAR(8) NOT NULL PRIMARY KEY,
@@ -215,6 +234,7 @@ CREATE TABLE userTbl (
     UNIQUE INDEX idx_userTbl_name (name),
     INDEX idx_userTbl_addr (addr)
 );
+
 
 DROP TABLE IF EXISTS buyTbl;
 CREATE TABLE buyTbl (
