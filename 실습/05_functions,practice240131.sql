@@ -191,5 +191,33 @@ SELECT film_id FROM film_category;
 
 
 -- 트랜잭션, COMMIT, ROLLBACK
--- 면접 때 많이 물어보는 내용. 어라 이거 배웠던건데
+-- 이론파트임. 면접 때 많이 물어보는 내용. 어라 이거 배웠던건데
+
+
+-- 1. 'payment' 테이블에서 payment_id가 1001인 amount 를 3.99 로 변경하는 트랜잭션을 시작하고, 그 트랜잭
+-- 션을 커밋하는 SQL문을 작성해 보세요.
+
+-- 2. 'payment' 테이블에서 payment_id가 1001인 amount 를 2.99 로 변경하는 트랜잭션을 시작하고, 그 트랜잭
+-- 션을 커밋하는 SQL문을 작성해 보세요.
+
+START TRANSACTION;
+UPDATE payment
+SET amount = '3.99'
+WHERE payment_id = 1001;
+COMMIT;
+
+START TRANSACTION;
+UPDATE payment
+SET amount = '2.99'
+WHERE payment_id = 1001;
+COMMIT;
+
+-- SQL VIEW 사용법
+
+-- CREATE VIEW 새로운테이블 AS
+-- SELECT FROM WHERE
+
+#원래 테이블 값 바뀌면, 가상 테이블 값도 바뀐다
+
+-- 고급 SQL
 
