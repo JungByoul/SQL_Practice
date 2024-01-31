@@ -219,5 +219,90 @@ COMMIT;
 
 #원래 테이블 값 바뀌면, 가상 테이블 값도 바뀐다
 
+CREATE OR REPLACE;
+
+-- 연습문제
+-- 1. Actorlnfo라는 VIEW를 만드세요. 이 VIEW는 actor 테이블에서 first_name 과 last_name 컬럼을 포함해야
+-- 합니다. actor_id 가 50 미만인 배우만 포함해야 합니다.
+USE sakila;
+CREATE VIEW ActorInfo AS
+SELECT CONCAT(first_name , '-', last_name)
+FROM actor
+WHERE actor_id < 50;
+
+SELECT * FROM ActorInfo;
+
+
+-- 2. film 테이블에서 렌탈 비용이 $2.00보다 높은 영화에 대한 VIEW를 만들어 봅니다. 이 VIEW의 이름은
+-- ExpensiveFilms 이고, title 과 rental_rate 컬럼만을 포함해야 합니다.
+CREATE VIEW ExpensiveFilms AS
+SELECT title, rental_rate
+FROM film
+WHERE rental_rate > 2.00;
+
+SELECT* FROM ExpensiveFilms;
+
+-- 3. 이미 만든 VIEW인 ActorInfo 를 수정하여 actor_id 가 100 미만인 배우만 포함하도록 만들어 봅니다.
+CREATE OR REPLACE VIEW ActorInfo AS
+SELECT actor_id, CONCAT(first_name , '-', last_name) FROM actor WHERE actor_id < 100;
+
+SELECT* FROM ActorInfo;
+
+-- 4. ExpensiveFilms VIEW를 삭제합니다.
+DROP VIEW ExpensiveFilms;
+
+-- 1~4번 정답
+CREATE OR REPLACE VIEW ActorInfo AS
+SELECT first_name, last_name
+FROM actor
+WHERE actor_id < 50;
+
+CREATE OR REPLACE VIEW ExpensiveFilms AS
+SELECT title, rental_rate
+FROM film
+WHERE rental_rate > 2;
+
+CREATE OR REPLACE VIEW ActorInfo AS
+SELECT first_name, last_name
+FROM actor
+WHERE actor_id < 100;
+
+DROP VIEW ExpensiveFilms;
+
+
 -- 고급 SQL
+-- 1.with 절
+
+#간단하게 분리해서 짜려고, 사용.
+#View로해도 되지 않나? 해도 된다.
+#근데 이 with절은 해당 쿼리에서만 사용되는 '임시' 테이블임. 그 안에서만 유효함
+SELECT * FROM film;
+-- 연습문제
+-- 문제 1: WITH 를 사용해서, sakila 데이터베이스의 각 등급별 영화의 평균 길이를 알아보세요.
+WITH AvgLength AS(
+	SELECT DISTINCT film_id, length FROM film
+)
+SELECT f.rating, AVG(l.length)
+FROM film f JOIN AvgLength l ON f.film_id = l.film_id
+GROUP BY f.rating;
+
+-- 정답. 아니 너무 간단한데ㅋㅋㅋ
+WITH AvgFilmLength AS (
+	SELECT rating, AVG(length)
+	FROM film
+	GROUP BY rating
+)
+SELECT * FROM AvgFilmLength;
+
+-- 오늘수업 여기까지
+ 
+-- 문제 2: CASE WHEN 을 사용해서 customer 테이블의 고객들을 active 컬럼에 따라 'Active' 또는 'Inactive'로 분
+-- 류해보세요.
+-- 문제 3: WITH 를 사용해서, sakila 의 film 테이블에서 각 rating 에 따른 평균 rental_duration 을 계산해보세요.
+-- 문제 4: sakila 의 customer 테이블에서 active 컬럼에 따라 고객을 'Active' 또는 'Inactive'로 분류하고, 각 분류에
+-- 몇 명이 있는지 계산하세요.
+-- 문제 5: WITH도 사용해서, sakila 의 payment 테이블에서 각 고객별 총 지불액을 계산하고, 그 지불액에 따라 고객을
+-- 'Low? 'Medium; High'로 분류하세요. 분류 기준은 다음과 같습니다:
+-- • Low: 0-50
+
 
