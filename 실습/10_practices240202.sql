@@ -126,7 +126,68 @@ JOIN category C ON C.category_id = FC.category_id
 GROUP BY C.name
 HAVING AVG(F.length) > (
 	SELECT AVG(length) FROM film
-)
+);
+
+
+-- 연습문제24 (실전)
+-- 각 카테고리별 평균 영화 대여 시간 (영화 대여 및 반납 시간의 차이, hour 단
+-- 위) 과 해당 카테고리명을 출력하세요
+-- 못풀겠음
+
+-- SELECT
+-- FROM cateogry -> cateogry_id, name
+-- film_category -> category_id, film_id
+-- film -> film_id, 
+-- rental -> _id, rental_date, return_date
+-- WHERE;
+
+select * from film;
+
+-- 정답
+-- SELECT 
+-- 	C.name,
+-- 	AVG(TIMESTAMPDIFF(HOUR, R.rental_date, R.return_date))
+-- FROM rental R
+-- JOIN inventory I ON I.inventory_id = R.inventory_id
+-- JOIN film_category F ON F.film_id = I.film_id
+-- JOIN category C ON C.category_id = F.category_id
+-- GROUP BY C.name
+
+연습문제25 (실전)
+새로운 임원이 부임했습니다. 총 매출액 상위 5개 장르의 매출액을 수시로
+확인하고자 합니다.
+Total Sales (각 장르별 총 매출액) 과 Genre (각 장르 이름) 으로 해당 데이
+터를 수시로 확인할 수 있는 view 를 top5_genres 로 만들고, 현재까지의
+상위 5 장르의 매출액을 출력해주세요
+
+-- join부터 개어려운데ㅋㅋ
+
+CREATE VIEW top5_genres AS
+SELECT
+FROM category C
+film_category FC-> category_id, film_id
+inventory-> film_id
+film F-> film_id, 
+rental-> rental_id, 
+payment-> amount rental_id
+WHERE;
+
+SELECT * FROM top5_genres LIMIT 5;
+
+-- 정답
+CREATE OR REPLACE VIEW top5_genres AS
+	SELECT
+		C.name AS 'Genre',
+		SUM(P.amount) AS 'Total Sales'
+	FROM payment P
+	JOIN rental R ON R.rental_id = P.rental_id
+	JOIN inventory I ON I.inventory_id = R.inventory_id
+	JOIN film_category F ON F.film_id = I.film_id
+	JOIN category C ON C.category_id = F.category_id
+	GROUP BY C.name
+    ORDER BY SUM(P.amount) DESC
+    LIMIT 5;
+
 
 
 
