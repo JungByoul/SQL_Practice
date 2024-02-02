@@ -266,21 +266,57 @@ HAVING SUM(amount) > (
 		FROM payment
 		GROUP BY customer_id
 	) AS amount_per_customer
-)
+);
 
 
--- 연습문제30 (실전)
--- 가장 많은 결제를 처리한 직원이 누구인지 찾으세요.
--- 모르게씀;;
+-- 연습문제30 (실전)/. 가장 많은 결제를 처리한 직원이 누구인지 찾으세요.
+-- 디버깅 못함;;
 SELECT S.staff_id, first_name, last_name, COUNT(*)
 FROM staff S JOIN
 	payment P ON S.staff_id = P.staff_id
 GROUP BY S.staff_id
 ORDER BY COUNT(*) DESC
-LIMIT 10;
+LIMIT 1;
 
 SELECT *
 FROM staff S JOIN
 	payment P ON S.staff_id = P.staff_id;
 
--- 정답
+-- 정답 아 잘 풀었는데, 이전것 ; 표시 안해놔서 계속 에러;;;;
+SELECT 
+	S.first_name, S.last_name,
+	COUNT(*) payment_count
+FROM staff S
+JOIN payment P ON S.staff_id = P.staff_id
+GROUP BY S.staff_id
+ORDER BY payment_count DESC
+LIMIT 1;
+
+
+-- 연습문제31 (실전)
+-- '액션' 카테고리에서
+--  높은 영화 영상 등급을 받은 순으로,
+--  상위 5개의 영화를
+-- | 보여주세요. (높은 영화 영상 등급 순으로의 정렬은 ORDER BY rating DESC 으로 처리 가능)
+#맞춤
+SELECT F.title
+FROM category C 
+	JOIN film_category FC ON C.category_id = FC.category_id
+	JOIN film F ON F.film_id = FC.film_id
+WHERE C.name ='Action'
+ORDER BY rating DESC
+LIMIT 5;
+
+-- 연습문제32 (실전)
+-- 각 영화 영상등급의 영화별 대여 기간(film.rental_duration)의 평균을 찾
+-- 으세요.
+#맞춤
+SELECT rating, AVG(rental_duration)
+FROM film F
+GROUP BY rating;
+
+
+
+
+
+
