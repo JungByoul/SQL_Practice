@@ -93,12 +93,41 @@ WHERE YEAR(payment_date) = 2005 AND MONTH(payment_date) = 08
 GROUP BY P.staff_id;
 
 -- 정답
-
-
+SELECT
+CONCAT (S. first_name, ' ' S.last_name) AS 'Staff Member',
+SUM(P.amount) AS 'Total Amount'
+FROM payment P
+JOIN staff S ON S.staff_id = P.staff_id
+WHERE
+EXTRACT(YEAR FROM P.payment_date) = 2005 AND
+EXTRACT(MONTH FROM P.payment_date) = 8
+GROUP BY S.staff_id;
 
 
 -- 연습문제23 (실전)
--- 각 카테고리의 평균 영화 러닝타임이 전체 평균 러닝타임보다 큰 카테고리들
--- 의 카테고리명과 해당 카테고리의 평균 러닝타임을 출력하세요
+-- 각 카테고리의 평균 영화 러닝타임이 
+-- 전체 평균 러닝타임보다 큰 카테고리들
+-- 의 카테고리명과
+--  해당 카테고리의 평균 러닝타임을 출력하세요
+
+-- 풀다 시간 초과
+-- SELECT 
+-- FROM film F
+-- 	JOIN film_category Fc IN F.film_id = Fc.film_id
+-- 	JOIN IN category C IN Fc.category_id = C.category_id
+-- WHERE > AVG(length)
+-- GROUP BY Fc.catogry_id;
+
+-- 정답. 단계를 나눠서 풀고 합쳐보자
+SELECT C.name, AVG(F.length)
+FROM film F
+JOIN film_category FC ON F.film_id = FC.film_id
+JOIN category C ON C.category_id = FC.category_id
+GROUP BY C.name
+HAVING AVG(F.length) > (
+	SELECT AVG(length) FROM film
+)
+
+
 
 
