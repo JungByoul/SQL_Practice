@@ -189,6 +189,98 @@ CREATE OR REPLACE VIEW top5_genres AS
     LIMIT 5;
 
 
+-- 연습문제27 (실전)
+-- 2005년 5월에 가장 많이 대여된 영화 3개를 찾으세요. 영화 제목과 대여 횟
+-- 수를 보여주세요.
+
+SELECT title, COUNT(*) cnt
+FROM rental R JOIN
+	inventory I  ON  R.inventory_id = I.inventory_id
+    JOIN film F ON  I.film_id = F.film_id
+GROUP BY title
+ORDER BY cnt DESC
+LIMIT 3;
+
+-- 답안. 연도 조건 충족 못함
+SELECT
+	F.title,
+    COUNT(*) rental_count
+FROM film F
+JOIN inventory I ON I.film_id = F.film_id
+JOIN rental R ON R.inventory_id = I.inventory_id
+WHERE 
+	YEAR(rental_date) = 2005 AND
+    MONTH(rental_date) = 5
+GROUP BY F.title
+ORDER BY rental_count DESC
+LIMIT 3;
 
 
+-- | 연습문제28 (실전)
+-- | 대여된 적이 없는 영화를 찾으세요.
 
+SELECT *
+FROM film F INNER
+	JOIN inventory I ON F.film_id = I.film_id
+UNION
+SELECT *
+FROM inventory I INNER
+    JOIN rental R ON I.inventory_id = R.inventory_id;
+
+-- 정답
+SELECT F.title
+FROM film F
+LEFT JOIN inventory I ON I.film_id = F.film_id 
+LEFT JOIN rental R ON R.inventory_id = I.inventory_id
+GROUP BY F.title
+HAVING COUNT(R.rental_id) = 0;
+
+
+-- 연습문제29 (실전)
+-- 각 고객의 총 지출 금액의 평균 보다
+--  총 지출 금액이 더 큰 고객 리스트를 찾으세요.
+--  그들의 이름과 그들이 지출한 총 금액을 보여주세요.
+-- 각 고객의 총 지출 금액 계산 방법:
+-- - 고객 A 5번 렌트, 총 100$
+-- - 고객 B 3번 렌트, 총 80$
+-- - 고객당 평균 지출: 90$
+
+SELECT C. COUNT(RETNAL_ID)
+FROM payment P JOIN customer C
+	ON P.customer_id = C.customer_id
+GROUP BY P.customer_id
+HAVING
+;
+
+-- 정답
+SELECT 
+	C.first_name, C.last_name, SUM(amount)
+FROM payment P
+JOIN customer C ON C.customer_id = P.customer_id
+GROUP BY C.customer_id
+HAVING SUM(amount) > (
+	SELECT
+		AVG(sum_amount)
+	FROM (
+		SELECT SUM(amount) AS sum_amount
+		FROM payment
+		GROUP BY customer_id
+	) AS amount_per_customer
+)
+
+
+-- 연습문제30 (실전)
+-- 가장 많은 결제를 처리한 직원이 누구인지 찾으세요.
+-- 모르게씀;;
+SELECT S.staff_id, first_name, last_name, COUNT(*)
+FROM staff S JOIN
+	payment P ON S.staff_id = P.staff_id
+GROUP BY S.staff_id
+ORDER BY COUNT(*) DESC
+LIMIT 10;
+
+SELECT *
+FROM staff S JOIN
+	payment P ON S.staff_id = P.staff_id;
+
+-- 정답
