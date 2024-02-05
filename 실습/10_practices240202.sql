@@ -315,8 +315,37 @@ SELECT rating, AVG(rental_duration)
 FROM film F
 GROUP BY rating;
 
+-- 연습문제33(실전)
+-- 매장 ID별 총 매출을 보여주는 뷰를 생성하세요.
+-- 시간초과
+CREATE VIEW total_input AS
+SELECT *
+FROM inventory I
+	JOIN store S ON S.store_id = I.store_id
+    JOIN rental R ON I.inventory_id = R.inventory_id 
+    JOIN payment P ON P.rental_id = R.rental_id
+GROUP BY S.store_id;
+
+-- 정답
+CREATE OR REPLACE VIEW total_sales_by_store AS
+	SELECT
+		STO.store_id, SUM(PA.amount) AS total_sales
+	FROM store STO
+	JOIN staff STA ON STO.store_id = STA.store_id
+	JOIN payment PA ON PA.staff_id = STA.staff_id
+	GROUP BY STO.store_id;
 
 
-
+-- 연습문제35 (실전)
+-- 가장 많은 고객이 있는 상위 5개 국가를 보여주세요.
+SELECT CO.country, COUNT(*)
+FROM customer C
+	JOIN address A ON C.address_id = A.address_id
+	JOIN city CI ON A.city_id = CI.city_id
+	JOIN country CO ON CI.country_id = CO.country_id
+GROUP BY CO.country_id
+HAVING COUNT(*) 
+ORDER BY COUNT(*) DESC
+LIMIT 5;
 
 
