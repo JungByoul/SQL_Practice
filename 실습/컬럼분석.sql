@@ -7,6 +7,8 @@ SELECT * FROM olist_geolocation_dataset;
 #도시 이름, 도시 약칭
 #geolocation_zip_code_prefix?
 
+SELECT review_score FROM olist_order_reviews_dataset;
+
 SELECT * FROM olist_order_items_dataset 
 ORDER BY order_item_id1
 LIMIT 10;
@@ -22,6 +24,7 @@ LIMIT 10;
 SELECT * FROM olist_order_reviews_dataset;
 
 SELECT * FROM olist_products_dataset;
+SELECT COUNT(product_photos_qty) FROM olist_products_dataset;
 
 SELECT COUNT(review_comment_title) FROM olist_order_reviews_dataset;
 
@@ -35,5 +38,4 @@ SELECT * FROM olist_sellers_dataset;
 
 SELECT COUNT(*) FROM product_category_name_translation;
 
-
-
+SELECT * FROM olist_orders_dataset;
