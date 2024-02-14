@@ -1,0 +1,10 @@
+seller_state,COUNT(O.order_id)
+SP,64063
+PR,6712
+MG,6227
+RJ,4287
+SC,2997
+RS,1755
+etc,1701
+DF,818
+BA,472
